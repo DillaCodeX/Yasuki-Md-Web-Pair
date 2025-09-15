@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ARSLAN-MD Pair</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: url('https://iili.io/3aA01R9.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #a855f7;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: #00ff88;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    input,
+    button {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin: 10px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input {
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    button {
+      background-color: #00ff88;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00cc6e;
+    }
+
+    .output {
+      margin-top: 30px;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      word-break: break-all;
+      border: 1px solid #333;
+    }
+
+    .logo-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #a855f7;
+      text-shadow: 0 0 10px #a855f7, 0 0 20px #a855f7;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid #a855f7;
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #a855f7;
+      text-align: center;
+      width: 90%;
+      min-width: 450px;
+      max-width: 450px;
+      margin: 30px 0;
+    }
+
+    footer {
+      font-weight: bold;
+      color: #eeff00;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 10px;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo-title">YASUKI MD</div>
+    <h3><i class="fa fa-user"></i> Link with phone number</h3>
+    <h6>🔢 Enter your number with country code.</h6>
+
+    <input type="text" id="number" placeholder="(94764*****4)" />
+    <button onclick="getCode()">Generate Pair Code</button>
+
+    <div id="result" class="output" style="display:none;"></div>
+  </div>
+  <script>
+    async function getCode() {
+      const number = document.getElementById("number").value.trim();
+      const resultBox = document.getElementById("result");
+
+      if (!number) {
+        alert("Please enter a valid number.");
+        return;
+      }
+
+      resultBox.style.display = 'block';
+      resultBox.textContent = "⏳ Generating code, please wait...";
+
+      try {
+        const res = await fetch(`/code?number=${encodeURIComponent(number)}`);
+        const data = await res.json();
+
+        if (data.code) {
+          resultBox.textContent = `✅ Pairing Code: ${data.code}`;
+        } else if (data.error) {
+          resultBox.textContent = `❌ Error: ${data.error}`;
+        } else {
+          resultBox.textContent = "⚠️ Unknown response received.";
+        }
+      } catch (err) {
+        resultBox.textContent = `❌ Failed to get code: ${err.message}`;
+      }
+    }
+  </script>
+
+  <footer>
+    © 2025 YASUKI MD | Developed by DillaCodeX
+  </footer>
+</body>
+
+</html>
